@@ -366,9 +366,6 @@ def collect_facebook_google(cfg):
               "(voir README pour la cle gratuite)", file=sys.stderr)
         return []
     fenetre = int(cfg.get("fb_fenetre_jours", 7))
-    fin = datetime.date.today()
-    debut = fin - datetime.timedelta(days=fenetre)
-    sort_param = f"date:r:{debut.strftime('%Y%m%d')}:{fin.strftime('%Y%m%d')}"
     items, seen = [], set()
     for q in cfg.get("fb_requetes", []):
         for start in (1, 11):  # 2 pages = jusqu'a 20 resultats / requete
@@ -376,8 +373,7 @@ def collect_facebook_google(cfg):
                 r = requests.get("https://www.googleapis.com/customsearch/v1",
                                  params={"key": key, "cx": cx, "q": q, "num": 10,
                                          "start": start, "gl": "ci", "lr": "lang_fr",
-                                         "dateRestrict": cfg.get("fb_fraicheur", "d7"),
-                                         "sort": sort_param},
+                                         "dateRestrict": cfg.get("fb_fraicheur", "d7")},
                                  timeout=30)
                 if r.status_code != 200:
                     print(f"[facebook] HTTP {r.status_code}: {r.text[:140]}", file=sys.stderr)
