@@ -369,19 +369,36 @@ def collect_facebook_google(cfg):
     items, seen = [], set()
     for q in cfg.get("fb_requetes", []):
         for start in (1, 11):  # 2 pages = jusqu'a 20 resultats / requete
-            try:
-                r = requests.get("https://www.googleapis.com/customsearch/v1",
-                                 params={"key": key, "cx": cx, "q": q, "num": 10,
-                                         "start": start, "gl": "ci", "lr": "lang_fr",
-                                         "dateRestrict": cfg.get("fb_fraicheur", "d7")},
-                                 timeout=30)
-                if r.status_code != 200:
-                    print(f"[facebook] HTTP {r.status_code}: {r.text[:140]}", file=sys.stderr)
+            base = {"key": key, "cx": cx, "q": q, "num": 10, "start": start}
+            attempts = [
+                {**base, "gl": "ci", "lr": "lang_fr",
+                 "dateRestrict": cfg.get("fb_fraicheur", "d7")},   # complet
+                {**base, "dateRestrict": cfg.get("fb_fraicheur", "d7")},  # sans gl/lr
+                base,                                               # minimal
+            ]
+            r = None
+            for ai, params in enumerate(attempts, 1):
+                try:
+                    r = requests.get("https://www.googleapis.com/customsearch/v1",
+                                     params=params, timeout=30)
+                except Exception as e:
+                    print(f"[facebook] echec reseau: {e}", file=sys.stderr)
+                    r = None
                     break
-                data = r.json()
-            except Exception as e:
-                print(f"[facebook] echec requete: {e}", file=sys.stderr)
+                if r.status_code == 200:
+                    break
+                try:
+                    err = r.json().get("error", {})
+                    det = (err.get("errors") or [{}])[0]
+                    print(f"[facebook] tentative {ai}/3 HTTP {r.status_code} "
+                          f"reason={det.get('reason')} location={det.get('location')}",
+                          file=sys.stderr)
+                except Exception:
+                    print(f"[facebook] tentative {ai}/3 HTTP {r.status_code}: {r.text[:200]}",
+                          file=sys.stderr)
+            if r is None or r.status_code != 200:
                 break
+            data = r.json()
             results = data.get("items", [])
             if not results:
                 break
