@@ -391,10 +391,10 @@ def collect_facebook_google(cfg):
                     err = r.json().get("error", {})
                     det = (err.get("errors") or [{}])[0]
                     print(f"[facebook] tentative {ai}/3 HTTP {r.status_code} "
-                          f"reason={det.get('reason')} location={det.get('location')}",
+                          f"reason={det.get('reason')} :: MESSAGE: {err.get('message')}",
                           file=sys.stderr)
                 except Exception:
-                    print(f"[facebook] tentative {ai}/3 HTTP {r.status_code}: {r.text[:200]}",
+                    print(f"[facebook] tentative {ai}/3 HTTP {r.status_code}: {r.text[:400]}",
                           file=sys.stderr)
             if r is None or r.status_code != 200:
                 break
