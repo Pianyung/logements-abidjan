@@ -1,0 +1,54 @@
+{
+  "ville": "abidjan",
+  "loyer_min": 70000,
+  "loyer_max": 150000,
+  "pieces_cibles": [
+    2,
+    3
+  ],
+  "chambres_equivalentes": [
+    1,
+    2
+  ],
+  "inclure_studios": false,
+  "zones_cibles": [
+    "cocody",
+    "angré",
+    "riviera",
+    "riviera 2",
+    "riviera2",
+    "anono",
+    "deux plateaux",
+    "2 plateaux",
+    "ii plateaux",
+    "attoban",
+    "marcory",
+    "yopougon",
+    "koumassi",
+    "treichville",
+    "palmeraie",
+    "bonoumin"
+  ],
+  "exclure_unite_loyer": [
+    "per quarter",
+    "par trimestre",
+    "per week",
+    "par semaine",
+    "per day",
+    "par jour"
+  ],
+  "fb_fraicheur": "d7",
+  "fb_requetes": [
+    "site:facebook.com \"2 pièces\" \"à louer\" (Cocody OR Angré OR Riviera) (FCFA OR mille OR loyer)",
+    "site:facebook.com \"3 pièces\" \"à louer\" (Cocody OR Angré OR Riviera) (FCFA OR mille OR loyer)",
+    "site:facebook.com appartement \"à louer\" (Palmeraie OR Bonoumin OR \"Deux Plateaux\" OR Attoban OR Anono) \"pièces\" (FCFA OR mille)",
+    "site:facebook.com (\"2 pièces\" OR \"3 pièces\") \"à louer\" Yopougon (FCFA OR mille OR loyer)",
+    "site:facebook.com (\"2 pièces\" OR \"3 pièces\") \"à louer\" (Marcory OR Koumassi OR Treichville) (FCFA OR mille)",
+    "site:facebook.com/groups appartement (\"2 pièces\" OR \"3 pièces\") Cocody \"à louer\"",
+    "site:facebook.com/groups appartement \"à louer\" (Yopougon OR Marcory OR Koumassi)",
+    "site:facebook.com appartement (2 OR 3) \"pièces\" \"à louer\" Abidjan (loyer OR mille)",
+    "site:facebook.com (immobilier OR agence) appartement \"à louer\" Cocody (\"2 pièces\" OR \"3 pièces\")"
+  ],
+  "fb_fenetre_jours": 7,
+  "exiger_date": false
+}
